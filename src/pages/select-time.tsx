@@ -92,7 +92,7 @@ export default function SelectTime({data}: any) {
             <main>
 
                <div className="wrapper">
-                   <div className={booking === "" ? "" : "booking-notice"}>{booking}</div>
+                   <div className={booking === "" ? "hidden" : "booking-notice"}>{booking}</div>
                    <h1 className="label-title">Select A Time</h1>
                    <div className="times">
                        {times.map((time, index) => {
