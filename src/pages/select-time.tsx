@@ -33,10 +33,10 @@ export default function SelectTime({data}: any) {
 
 
     useEffect(() => {
-        if (new Date().getHours() > 5 && Number(props.day) === Number(currentDay)) {
+        if (new Date().getHours() > 17 && Number(props.day) === Number(currentDay)) {
             setBooking("Sorry, there is no more booking for today!")
         }
-    }, [])
+    }, )
 
 
 
