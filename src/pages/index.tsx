@@ -9,7 +9,7 @@ export default function Home() {
 
 
     function sendDay(date: number) {
-        if (date < Number(curgitrentDay)) {
+        if (date < Number(currentDay)) {
             return;
         } else {
             router.push({
