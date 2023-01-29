@@ -32,7 +32,7 @@ export default function Home() {
       <div className="wrapper">
           <div className="mb-6 app-details">
               <h1 className="title">TimeReq</h1>
-              <p className="description">Request time on my calendar. Please fill out all the details during the process.</p>
+              <p className="description">Request time on my calendar. Please fill out all the info during the process.</p>
           </div>
           <h2 className="label-title">{monthName}</h2>
           <div className="month-grid">
