@@ -41,7 +41,7 @@ export default function Home() {
               })}
 
               {monthArray.map((date, index) => {
-                 return( <div className={date < Number(currentDay) ? "date-muted" : "day"} onClick={() => sendDay(date)} key={index}>{date}</div> )
+                 return( <div className={date < new Date().getDay() ? "date-muted" : "day"} onClick={() => sendDay(date)} key={index}>{date}</div> )
               })}
           </div>
       </div>
