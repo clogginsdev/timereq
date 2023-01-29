@@ -8,15 +8,6 @@ export default function Home() {
     const router = useRouter();
 
 
-
-    function checkDays(date:number) {
-        if (date < Number(currentDay)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     function sendDay(date: number) {
         if (date < Number(currentDay)) {
             return;
@@ -50,7 +41,7 @@ export default function Home() {
               })}
 
               {monthArray.map((date, index) => {
-                 return( <div className={checkDays(date) ? "date-muted" : "day"} onClick={() => sendDay(date)} key={index}>{date}</div> )
+                 return( <div className={date < Number(currentDay) ? "date-muted" : "day"} onClick={() => sendDay(date)} key={index}>{date}</div> )
               })}
           </div>
       </div>
