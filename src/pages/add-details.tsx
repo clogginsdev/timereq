@@ -6,8 +6,6 @@ import {apiFetch} from "../../utils/fetch"
 import Link from "next/link";
 
 
-
-
 export default function AddDetails() {
 
     const [form, setForm] = useState({
@@ -43,7 +41,7 @@ export default function AddDetails() {
 
     async function persistMeeting() {
 
-        if ((form.name === "" || form.email === "" || form.message === "") ) {
+        if (form.name === "" || form.email === "" || form.message === "") {
             setValidator("Please fill in all the fields!");
             return;
         } else {
@@ -53,7 +51,7 @@ export default function AddDetails() {
                     name: form.name,
                     email: form.email,
                     message: form.message,
-                    appointment
+                    appointment: appointment,
                 }
             });
 
@@ -63,11 +61,14 @@ export default function AddDetails() {
                     name: form.name,
                     email: form.email,
                     message: form.message,
-                    appointment
+                    appointment: appointment,
                 }
             });
-            setValidator("");
+            if (validator !== "") {
+                setValidator("");
+            }
             setMessage(true);
+            console.log("done")
         }
     }
 
@@ -103,7 +104,7 @@ export default function AddDetails() {
                                 <label htmlFor="message">Why Do You Want to Meet? (required)</label>
                                 <textarea value={form.message} onChange={(e) => handleForm(e)} name="message" />
                             </div>
-                            <button onClick={persistMeeting}>Request Meeting</button>
+                            <button onClick={() => persistMeeting()}>Request Meeting</button>
                         </form>
                     )}
                     <div className={message ? "message" : "hidden"}>
