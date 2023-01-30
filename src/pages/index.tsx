@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 export default function Home() {
     const router = useRouter();
 
-
     function sendDay(date: number) {
         if (date < Number(currentDay)) {
             return;
@@ -41,7 +40,7 @@ export default function Home() {
               })}
 
               {monthArray.map((date, index) => {
-                 return( <div className={Number(date) < new Date().getDate() ? "date-muted" : "day"} onClick={() => sendDay(date)} key={index}>{date}</div> )
+                 return( <div onClick={() => sendDay(date)} key={index}><span className={date < Number(currentDay) ? "date-muted" : "day"}>{date}</span></div> )
               })}
           </div>
       </div>
