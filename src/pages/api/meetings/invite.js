@@ -39,12 +39,12 @@ handler.post(async (req, res) => {
 
     const {error, value} = ics.createEvent(event);
     if (error) {
-        console.log(error);
+        console.error(error);
         return;
     }
 
     // Save the file to the file system
-    const filename = path.join(process.cwd(), 'public/invites', `${event.start.join('')}_invite.ics`);
+    const filename = path.join(process.cwd(), 'public/invites', `${event.start.join("")}_invite.ics`);
     fs.writeFileSync(filename, value);
 
     const attachment = fs.readFileSync(filename).toString("base64");
@@ -58,15 +58,12 @@ handler.post(async (req, res) => {
         attachments: [
             {
                 content: attachment,
-                filename: `${event.start.join('')}_invite.ics`,
+                filename: `${event.start.join("")}_invite.ics`,
                 type: 'text/calendar',
             }
         ]
     };
 
     await sgMail.send(msg);
-
-    // Return the download link to the client
-    res.status(200).json({message: "Thank you! Please look out for the invite in your email."});
 
 });

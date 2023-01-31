@@ -39,13 +39,13 @@ export default function AddDetails() {
         setForm((prevForm) => ({ ...prevForm, [e.target.name]: e.target.value }));
     }
 
-    async function persistMeeting() {
+    function persistMeeting() {
 
         if (form.name === "" || form.email === "" || form.message === "") {
             setValidator("Please fill in all the fields!");
             return;
         } else {
-            await apiFetch("meetings", {
+            apiFetch("meetings", {
                 method: "POST",
                 body: {
                     name: form.name,
@@ -53,9 +53,9 @@ export default function AddDetails() {
                     message: form.message,
                     appointment: appointment,
                 }
-            });
+            })
 
-            await apiFetch("meetings/invite", {
+            apiFetch("meetings/invite", {
                 method: "POST",
                 body: {
                     name: form.name,
@@ -63,10 +63,9 @@ export default function AddDetails() {
                     message: form.message,
                     appointment: appointment,
                 }
-            });
-            if (validator !== "") {
-                setValidator("");
-            }
+            })
+
+            setValidator("");
             setMessage(true);
             console.log("done")
         }

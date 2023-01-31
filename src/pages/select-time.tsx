@@ -1,78 +1,67 @@
 import {useRouter} from "next/router";
-import {useState, useEffect} from "react"
 import Head from "next/head";
-import {month, year, currentDay} from "../../utils/calendar";
+import {month, year} from "../../utils/calendar";
 // @ts-ignore
 import dbPromise, { jsonify } from "../../utils/db";
 
 
 const times = [
-    {time: 9, alias: "09:00"},
-    {time: 10, alias: "10:00"},
-    {time: 11, alias: "11:00"},
-    {time: 12, alias: "12:00"},
-    {time: 13, alias: "1:00"},
-    {time: 14, alias: "2:00"},
-    {time: 15, alias: "3:00"},
-    {time: 16, alias: "4:00"},
-    {time: 17, alias: "5:00"},
-]
+    { time: 9, alias: "09:00" },
+    { time: 10, alias: "10:00" },
+    { time: 11, alias: "11:00" },
+    { time: 12, alias: "12:00" },
+    { time: 13, alias: "1:00" },
+    { time: 14, alias: "2:00" },
+    { time: 15, alias: "3:00" },
+    { time: 16, alias: "4:00" },
+    { time: 17, alias: "5:00" },
+];
 
-export default function SelectTime({data}: any) {
-    const [booking, setBooking] = useState<string>("");
-
+export default function SelectTime({ data }: any) {
     const router = useRouter();
 
     const {
-        query: {day}
+        query: { day },
     } = router;
 
     const props = {
-        day
-    }
-
-
+        day,
+    };
 
     function checkTimes(time: number) {
-
         const wantedAppt = [Number(year), Number(month), Number(props.day), time, 0];
-        const currentDayLogic = Number(props.day) === new Date().getDate() && new Date().getHours() >= time;
+        const currentDayLogic =
+            Number(props.day) === new Date().getDate() && new Date().getHours() >= time;
 
-        for (let i = 0; i < data.length; i++) {
-            if (JSON.stringify(data[i].start) === JSON.stringify(wantedAppt) || currentDayLogic) {
+        for (const appt of data) {
+            if (JSON.stringify(appt.start) === JSON.stringify(wantedAppt) || currentDayLogic) {
                 return true;
-            } else {
-                return false;
             }
         }
+        return false;
     }
 
-
-
     async function sendAppointment(time: number) {
-        const wantedAppt = [Number(year), Number(month), Number(props.day), time, 0]
-        const currentDayLogic = Number(props.day) === new Date().getDate() && new Date().getHours() >= time;
+        const wantedAppt = [Number(year), Number(month), Number(props.day), time, 0];
+        const currentDayLogic =
+            Number(props.day) === new Date().getDate() && new Date().getHours() >= time;
 
-       let filteredMeetings = [];
-       for(let i=0;i<data.length;i++) {
-           if(JSON.stringify(data[i].start) === JSON.stringify(wantedAppt)) {
-               filteredMeetings.push(data[i]);
-           }
-       }
+        const filteredMeetings = data.filter(
+            (appt: any) => JSON.stringify(appt.start) === JSON.stringify(wantedAppt)
+        );
 
-       if (filteredMeetings.length !== 0 || currentDayLogic) {
-           return;
-        } else {
-            await router.push({
-                pathname: '/add-details',
-                query: {
-                    time,
-                    day: props.day,
-                }
-            })
+        if (filteredMeetings.length !== 0 || currentDayLogic) {
+            return;
         }
 
-   }
+        await router.push({
+            pathname: "/add-details",
+            query: {
+                time,
+                day: props.day,
+            },
+        });
+    }
 
     return (
         <>
@@ -85,7 +74,10 @@ export default function SelectTime({data}: any) {
             <main>
 
                <div className="wrapper">
-                   <div className={booking === "" ? "hidden" : "booking-notice"}>{booking}</div>
+                   <div className="mb-6 app-details">
+                       <p className="description">Select a time. Taken slots are grayed out.</p>
+                   </div>
+                   <div className={Number(props.day) === new Date().getDate() && new Date().getHours() >= 17 ? "booking-notice" : "hidden"}>Scheduling is finished for today!</div>
                    <h1 className="label-title">Select A Time</h1>
                    <div className="times">
                        {times.map((time, index) => {
@@ -117,5 +109,5 @@ export async function getServerSideProps() {
     const data = await getMeetings();
 
     // Pass data to the page via props
-    return { props: { data:jsonify(data) } }
+    return { props: { data: jsonify(data) } }
 }
