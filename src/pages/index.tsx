@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { weekdays, monthName, monthArray, currentDay } from '../../utils/calendar';
+import { weekdays, monthName, currentDay, days } from '../../utils/calendar';
 import { useRouter } from 'next/router';
 
 export default function Home() {
@@ -37,7 +37,7 @@ export default function Home() {
                                 {day}
                             </div>
                         ))}
-                        {monthArray.map((date, index) => (
+                        {days.map((date, index) => (
                             <div onClick={() => sendDay(date)} key={date}>
                 <span className={date < Number(currentDay) ? 'date-muted' : 'day'}>
                   {date}
